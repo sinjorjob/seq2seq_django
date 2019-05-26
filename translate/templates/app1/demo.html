@@ -1,0 +1,73 @@
+{% extends '../base.html' %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+{% load static %}
+<link rel="stylesheet" href="{% static "css/talkarea.css" %}">
+
+{% block title %}
+  英語→日本語翻訳機能デモ
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  
+    <form action="" method="post">{% csrf_token %}
+        <h1>英語→日本語翻訳機能デモ</h1>
+        
+        <div class="form-group row my-4">         
+            <label class="col-lg-2 col-form-label"><h4>{{form.messages.label}}</h4></label><br>
+    		<div class="col-lg-6">       
+                {{form.messages|add_class:"form-control"}}
+
+    		</div>
+
+         <div class="col-lg-2">       
+                <a href = "http://localhost:8000/app/demo/">入力文クリア</a>
+               </div>
+        </div>
+        <div class="col-lg-2">       
+                <button type="submit" class="btn btn-primary">実行</button>
+            </div>
+     </form>
+     <hr>
+     <div id="resultarea"></div>
+
+
+{% if rets %}
+<h4>翻訳結果</h4><br>
+
+    <div id="talkarea">
+    {% for talktxt in talktxts %}
+    {% if talktxt.k == 'b' %}
+        <div class="form-group row my-2">         
+             <div class="card col-lg-5 border-secondary bg-light text-black">       
+                   {{ talktxt.txt }}
+            </div> 
+            <div class="col-lg-1"><img src="{% static "images/question.jpg" %}" width="45" height="45" /></div> 
+            <div class="col-lg-4"></div>  
+        </div>
+    {% else %}	
+        <div class="form-group row my-2">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-1"><img src="{% static "images/information.jpg" %}" width="45" height="45" /></div>  
+            <div class="card col-lg-5 border-secondary bg-primary text-white">
+                {{ talktxt.txt }}
+            </div>
+        </div>
+    {% endif %}	 
+    {% endfor %}
+{% endif %}
+{% if err_message %}
+<h4>入力エラー</h4><br>  
+<div class="card mb-3 bg-danger">
+ <div class="card-header">
+
+ <div class="card-text text-white">        
+{{ err_message }}
+{% endif %}
+</div>
+</div> 
+</div> 
+
+</div>
+{% endblock %}
